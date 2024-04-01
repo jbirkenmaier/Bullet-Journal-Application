@@ -12,19 +12,30 @@ def printInput(root,inputtxt):
     label = tk.Label(root, text = inp)
     #label.pack()
 
-def create_activity():
-    pass
+def read_data(left_frame,right_frame,event, user_data, row):
+    list_position_of_activity = row-10
+    inp = user_data.get("end-1c linestart", "end-1c lineend")
+    print(list_position_of_activity)
+    print(activities[list_position_of_activity-1].name)
 
+def activity_button_event(left_frame,right_frame, event, inputtxt, row):
+    user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
+    user_data.grid(row=row, column =2)
+    user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row))
+    
 
 def on_enter(left_frame,right_frame,event, inputtxt):
     #printInput(root,inputtxt)
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     if inp != "":
-        activity = Activity(right_frame,inputtxt, 0,0).plot_graph()
+        activity = Activity(right_frame,inp, 0,0)
         activities.append(activity)
+        activity.plot_graph()
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
-        activity_button.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
+        row=len(activities)+10
+        activity_button.grid(row=row, column=1,sticky="nsew", pady=1)
+        activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, row))
         #activity_label = tk.Label(left_frame,text=inp, font = ("Verdana 10 bold", 25),fg = "blue",bg = "yellow")
         #activity_label.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
     else:
@@ -38,11 +49,14 @@ def add_activity_button_command(left_frame,right_frame,event,inputtxt):
     #printInput(root,inputtxt)
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     if inp != "":
-        activity = Activity(right_frame,inputtxt, 0,0).plot_graph()
+        activity = Activity(right_frame,inp, 0,0)
         activities.append(activity)
+        activity.plot_graph()
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
-        activity_button.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
+        row=len(activities)+10
+        activity_button.grid(row=row, column=1,sticky="nsew", pady=1)
+        activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, row))
         #activity_label = tk.Label(left_frame,text=inp, font = ("Verdana 10 bold", 25),fg = "blue",bg = "yellow")
         #activity_label.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
     else:
