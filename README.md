@@ -6,7 +6,7 @@ Current progress:
 -Created an input window, to add activities 
 -input can be entered either by pressing enter or by clicking on a corresponding button
 
---> Further goals: 
+--> Further goals: <br>
               -Create "class Activity" <br>
               -Create an input area so that users can input data<br>
               -Visually presenting the data given by the user using matplotlib <br>
