@@ -9,7 +9,7 @@ def printInput(root,inputtxt):
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     label = tk.Label(root, text = inp)
     #label.pack()
-
+    
 def on_enter(root,event, inputtxt):
     printInput(root,inputtxt)
 
@@ -31,9 +31,7 @@ class Activity:
         self.plot_graph()
         
     def plot_graph(self):
-        #plot_frame = tk.Frame(self.root)
-        #plot_frame.grid(row=self.row, column=self.column)
-
+        
         x=[i for i in range(4)]
         y=[random.randint(-10,10) for i in range(4)]
 
@@ -46,13 +44,7 @@ class Activity:
         
         canvas = FigureCanvasTkAgg(fig, master=self.root)
         canvas.draw()
-        canvas.get_tk_widget().grid(row=self.row, column=self.column)#grid(row=self.row, column=self.column)
+        canvas.get_tk_widget().grid(row=self.row, column=self.column)
 
-        # Place the canvas on the Tkinter window
-        #canvas.get_tk_widget().place(x=100, y=200)
-
-        #canvas = FigureCanvasTkAgg(fig, master=plot_frame)
-        #canvas.draw()
-        #canvas.get_tk_widget().pack(side="top", fill="both", expand=False)
 
 
