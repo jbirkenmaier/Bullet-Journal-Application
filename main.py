@@ -42,11 +42,13 @@ def main():
 
     #add_activity_button.after_idle(lambda: fl.get_button_width(add_activity_button, inputtxt))  # Get button width after it's fully drawn
 
-
+    '''
     activity = fl.Activity(right_frame,"name", 0,0).plot_graph()
     activity = fl.Activity(right_frame,"name", 0,1).plot_graph()
     activity = fl.Activity(right_frame,"name", 1,0).plot_graph()
     activity = fl.Activity(right_frame,"name", 1,1).plot_graph()
+    '''
+
         
     root.mainloop()
 
