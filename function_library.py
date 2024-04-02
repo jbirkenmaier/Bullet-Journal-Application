@@ -4,6 +4,14 @@ import customtkinter as ctk
 import random
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import time
+import datetime
+
+current_time = datetime.datetime.now()
+formatted_time = current_time.strftime("%d.%m.%Y %H:%M:%S")
+print("Formatted Time:", formatted_time)
+
+
 
 activities=[]
 
@@ -17,6 +25,7 @@ def read_data(left_frame,right_frame,event, user_data, row):
     inp = user_data.get("end-1c linestart", "end-1c lineend")
     print(list_position_of_activity)
     print(activities[list_position_of_activity-1].name)
+    print(activities[list_position_of_activity-1].time.year)
 
 def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
@@ -29,6 +38,7 @@ def on_enter(left_frame,right_frame,event, inputtxt):
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     if inp != "":
         activity = Activity(right_frame,inp, 0,0)
+        activity.time = datetime.datetime.now()
         activities.append(activity)
         activity.plot_graph()
         ctk.set_default_color_theme("blue")
@@ -50,6 +60,7 @@ def add_activity_button_command(left_frame,right_frame,event,inputtxt):
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     if inp != "":
         activity = Activity(right_frame,inp, 0,0)
+        activity.time = datetime.datetime.now()
         activities.append(activity)
         activity.plot_graph()
         ctk.set_default_color_theme("blue")
@@ -70,13 +81,17 @@ class Activity:
         self.row = row
         self.column = column
         self.plot_graph()
+        self.time = None
         #self.goal (daily, weekly,monthly)
         
     def plot_graph(self):
         
-        x=[i for i in range(4)]
-        y=[random.randint(-10,10) for i in range(4)]
+        #x=[i for i in range(4)]
+        #y=[random.randint(-10,10) for i in range(4)]
 
+        x=[]
+        y=[]
+        
         fig = Figure(figsize=(5, 4), dpi=100)
         plot = fig.add_subplot(1, 1, 1)
         plot.plot(x,y, marker='o')
