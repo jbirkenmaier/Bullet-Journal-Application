@@ -26,6 +26,8 @@ def printInput(root,inputtxt):
 def read_data(left_frame,right_frame,event, user_data, row):
     list_position_of_activity = row-10
     inp = user_data.get("end-1c linestart", "end-1c lineend")
+    activities[list_position_of_activity-1].y.append(float(inp))
+    activities[list_position_of_activity-1].plot_graph()
     #print(list_position_of_activity)
     #print(activities[list_position_of_activity-1].name)
     #print(activities[list_position_of_activity-1].time.year)
@@ -46,7 +48,7 @@ def on_enter(left_frame,right_frame,event, inputtxt):
             activity = Activity(right_frame,inp, row,column)
             activity.time = datetime.datetime.now()
             activities.append(activity)
-            activity.plot_graph()
+            #activity.plot_graph()
             column=0
             row+=1
         else:
@@ -54,7 +56,7 @@ def on_enter(left_frame,right_frame,event, inputtxt):
             activity = Activity(right_frame,inp, row,column)
             activity.time = datetime.datetime.now()
             activities.append(activity)
-            activity.plot_graph()
+            #activity.plot_graph()
             column+=1
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
@@ -97,6 +99,9 @@ class Activity:
         self.column = column
         #self.plot_graph()
         self.time = None
+        self.unit = " "
+        self.x = []
+        self.y=[]
         #self.goal (daily, weekly,monthly)
         
     def plot_graph(self):
@@ -104,15 +109,17 @@ class Activity:
         #x=[i for i in range(4)]
         #y=[random.randint(-10,10) for i in range(4)]
 
-        x=[self.time]
-        y=[3]
+        self.append_time()
+        
+        x=self.x
+        y=self.y
         
         fig = Figure(figsize=(5, 4), dpi=100)
         plot = fig.add_subplot(1, 1, 1)
         plot.plot(x,y, marker='o')
-        plot.set_title('Example Plot')
-        plot.set_xlabel('X-axis')
-        plot.set_ylabel('Y-axis')
+        plot.set_title(self.name)
+        plot.set_xlabel('Datum')
+        plot.set_ylabel(self.unit)
 
         plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%d-%m-%Y'))
 
@@ -121,5 +128,7 @@ class Activity:
         canvas.draw()
         canvas.get_tk_widget().grid(row=self.row, column=self.column)
 
+    def append_time(self):
+        self.x.append(self.time)
 
 
