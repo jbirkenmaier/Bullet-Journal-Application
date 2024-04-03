@@ -6,6 +6,8 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time
 import datetime
+import ast
+import csv
 
 current_time = datetime.datetime.now()
 formatted_time = current_time.strftime("%d.%m.%Y %H:%M:%S")
@@ -18,25 +20,85 @@ column = 0
 first_run=True
 
 def save_state():
-    with open('data.txt', 'w') as f:
+    with open('data.csv', 'w') as file:
         print("Datenlänge:",len(activities))
         for element in activities:
-            f.write(str(element.name))
-            f.write(str(element.row))
-            f.write(str(element.column))
-            f.write(str(element.time))
-            f.write(str(element.unit))
-            f.write(str(element.x))
-            f.write(str(element.y))
+            file.write(str(element.name)+",")
+            file.write(str(element.row)+",")
+            file.write(str(element.column)+",")
+            file.write(str(element.time)+",")
+            file.write(str(element.unit)+",")
+            file.write(str(element.x)+",")
+            file.write(str(element.y)+"\n")
 
         # Pickle the 'data' dictionary using the highest protocol available.
         
-def load_state():
-    with open('data.txt', 'rb') as f:
-    # The protocol version used is detected automatically, so we do not
-    # have to specify it.
-        activities = pickle.load(f)
+def load_state(root):#call root as right_frame
+    with open('data.csv') as file:
+        csv_reader = csv.reader(file)
+        for line in csv_reader:
+            number_of_entrys=str(line).count("datetime.datetime")
+            date_index_positions = []
 
+            
+            for (i,element) in enumerate(line):
+                dates_pos = element.find("datetime.datetime")
+                if dates_pos !=-1:
+                    date_index_positions.append(i)
+
+            act = line[0].strip()
+            print(act)
+            print('NUM ENTRYS: ', number_of_entrys)
+
+            rw = int(line[1].strip())
+            print(rw)
+            cm = int(line[2].strip())
+            print(cm)
+
+            x_ev = []
+            y_ev = []
+            
+            for i in range(number_of_entrys):
+                print("i=",i)
+                date_str = line[date_index_positions[i]:date_index_positions[i]+7]
+                date_str = ",".join(date_str).strip().strip("[datetime.datetime(").strip(")]")
+                print(date_str)
+                print("WORKED")
+                date_obj=datetime.datetime.strptime(date_str, '%Y, %m, %d, %H, %M, %S, %f')
+                x_ev.append(date_obj)
+                y_str = line[7*number_of_entrys+i].strip()
+                y_ev.append(ast.literal_eval(y_str))
+                
+                
+                #if y_str != "":
+                #    print("Y-String: ", y_str)
+                #    y_ev = ast.literal_eval(y_str)
+                #else:
+                #    y_ev =[]
+            
+
+
+
+            '''
+            if x_str!="":
+                x_ev = ast.literal_eval(x_str)
+            else:
+                x_ev=[]
+            ''' 
+            #line=line.strip().split('STOP')
+            #print(line[0])
+            #for element in line:
+                #print(element)
+            
+            activity = Activity(root,act,rw,cm)
+            #activity.time = ast.literal_eval((line[3]))
+            activity.unit = line[4]
+            activity.x = x_ev
+            activity.y = y_ev
+            activities.append(activity)
+    for element in activities:
+        element.plot_graph()
+    
 def printInput(root,inputtxt): 
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     label = tk.Label(root, text = inp)
@@ -46,6 +108,8 @@ def read_data(left_frame,right_frame,event, user_data, row):
     list_position_of_activity = row-10
     inp = user_data.get("end-1c linestart", "end-1c lineend")
     activities[list_position_of_activity-1].y.append(float(inp))
+    activities[list_position_of_activity-1].time=datetime.datetime.now()
+    activities[list_position_of_activity-1].append_time()
     activities[list_position_of_activity-1].plot_graph()
     save_state()
     #print(list_position_of_activity)
@@ -67,6 +131,7 @@ def on_enter(left_frame,right_frame,event, inputtxt):
             print(row,column)
             activity = Activity(right_frame,inp, row,column)
             activity.time = datetime.datetime.now()
+            print(activity.time)
             activities.append(activity)
             #activity.plot_graph()
             column=0
@@ -99,7 +164,6 @@ def add_activity_button_command(left_frame,right_frame,event,inputtxt):
     if inp != "":
         activity = Activity(right_frame,inp, 0,0)
         activity.time = datetime.datetime.now()
-        activities.append(activity)
         activity.plot_graph()
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
@@ -122,7 +186,7 @@ class Activity:
         self.time = None
         self.unit = " "
         self.x = []
-        self.y=[]
+        self.y= []
         #self.goal (daily, weekly,monthly)
         
     def plot_graph(self):
@@ -130,7 +194,7 @@ class Activity:
         #x=[i for i in range(4)]
         #y=[random.randint(-10,10) for i in range(4)]
 
-        self.append_time()
+        #self.append_time()
         
         x=self.x
         y=self.y

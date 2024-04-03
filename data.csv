@@ -1,0 +1,4 @@
+Sport,0,0,None, ,[datetime.datetime(2024, 4, 3, 20, 56, 6, 976037), datetime.datetime(2024, 4, 3, 20, 56, 9, 375913)],[3, 20]
+Lesen,0,1,None, ,[datetime.datetime(2024, 4, 3, 20, 56, 12, 811262), datetime.datetime(2024, 4, 3, 20, 56, 15, 213629), datetime.datetime(2024, 4, 3, 20, 56, 17, 312450)],[3, 20, 56]
+JiuJitsu,0,2,None, ,[datetime.datetime(2024, 4, 3, 20, 56, 21, 891969), datetime.datetime(2024, 4, 3, 20, 56, 24, 402802)],[3, 20]
+JiuJitsu,0,0,2024-04-03 22:06:25.881702, ,[datetime.datetime(2024, 4, 3, 22, 6, 13, 330075), datetime.datetime(2024, 4, 3, 22, 6, 25, 881702)],[4.0, 44.0]
