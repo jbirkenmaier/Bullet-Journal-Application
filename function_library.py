@@ -11,12 +11,31 @@ current_time = datetime.datetime.now()
 formatted_time = current_time.strftime("%d.%m.%Y %H:%M:%S")
 print("Formatted Time:", formatted_time)
 
-
-
 activities=[]
+
 row = 0
 column = 0
 first_run=True
+
+def save_state():
+    with open('data.txt', 'w') as f:
+        print("Datenlänge:",len(activities))
+        for element in activities:
+            f.write(str(element.name))
+            f.write(str(element.row))
+            f.write(str(element.column))
+            f.write(str(element.time))
+            f.write(str(element.unit))
+            f.write(str(element.x))
+            f.write(str(element.y))
+
+        # Pickle the 'data' dictionary using the highest protocol available.
+        
+def load_state():
+    with open('data.txt', 'rb') as f:
+    # The protocol version used is detected automatically, so we do not
+    # have to specify it.
+        activities = pickle.load(f)
 
 def printInput(root,inputtxt): 
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
@@ -28,6 +47,7 @@ def read_data(left_frame,right_frame,event, user_data, row):
     inp = user_data.get("end-1c linestart", "end-1c lineend")
     activities[list_position_of_activity-1].y.append(float(inp))
     activities[list_position_of_activity-1].plot_graph()
+    save_state()
     #print(list_position_of_activity)
     #print(activities[list_position_of_activity-1].name)
     #print(activities[list_position_of_activity-1].time.year)
@@ -63,6 +83,7 @@ def on_enter(left_frame,right_frame,event, inputtxt):
         rows=len(activities)+10
         activity_button.grid(row=rows, column=1,sticky="nsew", pady=1)
         activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, rows))
+        save_state()
         #activity_label = tk.Label(left_frame,text=inp, font = ("Verdana 10 bold", 25),fg = "blue",bg = "yellow")
         #activity_label.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
     else:

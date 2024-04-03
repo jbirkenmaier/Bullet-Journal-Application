@@ -7,14 +7,14 @@ ctk.set_default_color_theme("green")
 
 font_size = 25  
 
-activities = []
+#activities = []
 
 def main():
     root = ctk.CTk()
     #app = BulletJournalApp(root)
     root.title("Journal-Application")
     root.geometry("1000x500")
-
+    
     font = tk.font.Font(size=font_size)
     
     left_frame = tk.Frame(root,bg="black")
@@ -48,9 +48,6 @@ def main():
     activity = fl.Activity(right_frame,"name", 1,0).plot_graph()
     activity = fl.Activity(right_frame,"name", 1,1).plot_graph()
     '''
-
-        
     root.mainloop()
-
 if __name__ == "__main__":
     main()
