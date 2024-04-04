@@ -7,9 +7,12 @@ ctk.set_default_color_theme("green")
 
 font_size = 25  
 
-#activities = []
+activities = []
+row = 0
+column = 0
 
 def main():
+    k = 0
     root = ctk.CTk()
     #app = BulletJournalApp(root)
     root.title("Journal-Application")
@@ -27,8 +30,9 @@ def main():
     root.grid_columnconfigure(0, weight=1)
     root.grid_columnconfigure(1, weight=1)
 
-    fl.load_state(left_frame,right_frame)
-
+    #acts=fl.activities
+    #fl.set_row_col()
+    
     inputtxt = tk.Text(left_frame, height = 1, width = 20, font=font,bg="lightgray", padx=10, pady=5)
     inputtxt.grid(row=1, column=2)
     inputtxt.bind("<Return>",lambda event: fl.on_enter(left_frame,right_frame,event, inputtxt))
@@ -39,8 +43,8 @@ def main():
 
     for row in range(3,10):
         tk.Frame(left_frame,width=183, height=20, bg="black").grid(row=row, column=1, sticky="nsew")
-    
 
+    k+=1
     #add_activity_button.after_idle(lambda: fl.get_button_width(add_activity_button, inputtxt))  # Get button width after it's fully drawn
 
     '''
