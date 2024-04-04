@@ -13,6 +13,9 @@ Current progress: <br>
 -Data can now be entered by the user <br>
 -Data gets plotted and updated using the matplotlib library <br>
 
+03.04.2024: <br>
+-attempt to integrate the possibility to save and load data. I discovered that there are some issues about the structure of my code, especially with handeling the data. These will be resolved soon.
+
 Further goals: <br>
 --> storing the given data, so that the application can be used as a journal  <br>
 --> Create nicer plots <br>
