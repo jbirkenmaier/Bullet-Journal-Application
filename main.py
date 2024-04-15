@@ -32,15 +32,29 @@ def main():
 
     #acts=fl.activities
     #fl.set_row_col()
+
+    #fl.load_state(left_frame,right_frame)
+
+    
+    try:
+        fl.load_state(left_frame,right_frame)
+    except:
+        print("No saved data yet")
+    
+    #print("ROW", row, "COLUMN", column)
     
     inputtxt = tk.Text(left_frame, height = 1, width = 20, font=font,bg="lightgray", padx=10, pady=5)
     inputtxt.grid(row=1, column=2)
     inputtxt.bind("<Return>",lambda event: fl.on_enter(left_frame,right_frame,event, inputtxt))
 
+
+    #hier ist ein mess up
+    '''
     add_activity_button = ctk.CTkButton(master=left_frame, text="Add Activity")
     add_activity_button.grid(row=2, column=2)
     add_activity_button.bind("<Button-1>",lambda event: fl.add_activity_button_command(left_frame,right_frame, event, inputtxt))
-
+    '''
+    
     for row in range(3,10):
         tk.Frame(left_frame,width=183, height=20, bg="black").grid(row=row, column=1, sticky="nsew")
 
