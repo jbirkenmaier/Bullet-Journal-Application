@@ -12,70 +12,50 @@ import main
 
 current_time = datetime.datetime.now()
 formatted_time = current_time.strftime("%d.%m.%Y %H:%M:%S")
-print("Formatted Time:", formatted_time)
 
 
 def on_enter(left_frame,right_frame,event, inputtxt, get_txt=True, activity=None):
-    #printInput(root,inputtxt)
-    #global row, column, first_run
+
     if get_txt==True:
         inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     else:
         inp = inputtxt
 
-#BUG: I hardcoded the rows and columns here. But if data is loaded, then this wont work anymore.
-#Solution: Start from the smallest rows and columns
-
     if inp != "" and get_txt==True:
-        print("THIS CASE")
         if main.column==2:
-            print(main.row,main.column)
-            activity = Activity(right_frame,inp, main.row, main.column) #Ich glaube hier liegt das problem
-            print('CREATED ACTIVITY')
+            activity = Activity(right_frame,inp, main.row, main.column) 
             activity.time = datetime.datetime.now()
-            print(activity.time)
             main.activities.append(activity)
             activity.plot_graph()
             main.column=0
             main.row+=1
         else:
-            print(main.row,main.column)
-            activity = Activity(right_frame,inp, main.row,main.column) #Ich glaube hier liegt das problem
+            activity = Activity(right_frame,inp, main.row,main.column) 
             activity.time = datetime.datetime.now()
             main.activities.append(activity)
-            print('CREATED ACTIVITY')
             activity.plot_graph()
             main.column+=1
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
-        print('HelloHELlo')
         rows=activity.indx+11
-        print(rows-11, len(main.activities))
         activity_button.grid(row=rows, column=1,sticky="nsew", pady=1)
         activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, rows))
         activity.plot_graph()
         save_state()
         
     elif get_txt==False:
-        print('CALLED')
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
-        rows=activity.indx+11 #hier ist das problem
+        rows=activity.indx+11
         activity_button.grid(row=rows, column=1,sticky="nsew", pady=1)
-        #rows=11
         activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, rows))
         activity.plot_graph()
         save_state()
         ctk.set_default_color_theme("green")
-
-
-        #activity_label = tk.Label(left_frame,text=inp, font = ("Verdana 10 bold", 25),fg = "blue",bg = "yellow")
-        #activity_label.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
     else:
         pass
 
 def load_state(root1,root2):#call root as right_frame
-    print("loading state")
     with open('data.csv') as file:
         csv_reader = csv.reader(file)
         for line in csv_reader:
@@ -89,27 +69,18 @@ def load_state(root1,root2):#call root as right_frame
                     date_index_positions.append(i)
 
             act = line[0].strip()
-            print(act)
-            print('NUM ENTRYS: ', number_of_entrys)
-
             rw = int(line[1].strip())
-            print("ROW->",rw)
             cm = int(line[2].strip())
-            print("COLUMN->",cm)
 
             x_ev = []
             y_ev = []
             
             for i in range(number_of_entrys):
-                print("i=",i)
                 date_str = line[date_index_positions[i]:date_index_positions[i]+7]
                 date_str = ",".join(date_str).strip().strip("[datetime.datetime(").strip(")]")
-                print(date_str)
-                print("WORKED")
                 date_obj=datetime.datetime.strptime(date_str, '%Y, %m, %d, %H, %M, %S, %f')
                 x_ev.append(date_obj)
                 y_str = line[-(i+1)].strip().strip(']').strip('[')
-                print('Y_STR: ',y_str)
                 y_ev.append(ast.literal_eval(y_str))
 
             y_ev.reverse()
@@ -128,24 +99,15 @@ def load_state(root1,root2):#call root as right_frame
 def set_row_col():
     if main.activities!=[]:
         if main.activities[-1].column==2:
-            print('CHECKER')
-        #print(main.activities[-1].row)
             main.row=main.activities[-1].row+1
             main.column=0
-            #main.row=main.activities[-1].row
-            #main.column=main.activities[-1].column
         else:
-            print('CHECKER 2')
-            #main.row=main.activities[-1].row
-            #main.column=main.activities[-1].column
             main.row=main.activities[-1].row
             main.column+=1
-        print(main.row,main.column,"<----")
-
         
 def save_state():
     with open('data.csv', 'w') as file:
-        print("Datenlänge:",len(main.activities))
+        #print("Datenlänge:",len(main.activities))
         for element in main.activities:
             file.write(str(element.name)+",")
             file.write(str(element.row)+",")
@@ -166,26 +128,16 @@ def printInput(root,inputtxt):
 
 def read_data(left_frame,right_frame,event, user_data, row):
     list_position_of_activity = row-11
-    print("MARKER, ",list_position_of_activity, len(main.activities))
+    #print("MARKER, ",list_position_of_activity, len(main.activities))
     inp = user_data.get("end-1c linestart", "end-1c lineend")
 
     main.activities[list_position_of_activity].y.append(float(inp))
     main.activities[list_position_of_activity].time=datetime.datetime.now()
     main.activities[list_position_of_activity].append_time()
-    main.activities[list_position_of_activity].plot_graph()
-    #except:
-    #    main.activities[list_position_of_activity-2].y.append(float(inp))
-    #    main.activities[list_position_of_activity-2].time=datetime.datetime.now()
-    #    main.activities[list_position_of_activity-2].append_time()
-    #    main.activities[list_position_of_activity-2].plot_graph()
-    
+    main.activities[list_position_of_activity].plot_graph()    
     save_state()
-    #print(list_position_of_activity)
-    #print(activities[list_position_of_activity-1].name)
-    #print(activities[list_position_of_activity-1].time.year)
 
 def activity_button_event(left_frame,right_frame, event, inputtxt, row):
-    print("HELLO")
     user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
     user_data.grid(row=row, column =2)
     user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row))
@@ -301,33 +253,24 @@ def get_button_width(button, inputtxt):
     inputtxt.place(x=50+add_activity_button_width+90, y=50)
 
 def add_activity_button_command(left_frame,right_frame,event,inputtxt):
-    #printInput(root,inputtxt)
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     if inp != "":
-        print("THIS CASE")
         if main.column==2:
-            print(main.row,main.column)
-            activity = Activity(right_frame,inp, main.row, main.column) #Ich glaube hier liegt das problem
-            print('CREATED ACTIVITY')
+            activity = Activity(right_frame,inp, main.row, main.column)
             activity.time = datetime.datetime.now()
-            print(activity.time)
             main.activities.append(activity)
             activity.plot_graph()
             main.column=0
             main.row+=1
         else:
-            print(main.row,main.column)
-            activity = Activity(right_frame,inp, main.row,main.column) #Ich glaube hier liegt das problem
+            activity = Activity(right_frame,inp, main.row,main.column) 
             activity.time = datetime.datetime.now()
             main.activities.append(activity)
-            print('CREATED ACTIVITY')
             activity.plot_graph()
             main.column+=1
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
-        print('HelloHELlo')
         rows=activity.indx+11
-        print(rows-11, len(main.activities))
         activity_button.grid(row=rows, column=1,sticky="nsew", pady=1)
         activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, rows))
         activity.plot_graph()
@@ -350,15 +293,8 @@ class Activity:
         
     def plot_graph(self):
         
-        #x=[i for i in range(4)]
-        #y=[random.randint(-10,10) for i in range(4)]
-
-        #self.append_time()
-        
         x=self.x
         y=self.y
-
-        print(y)
         
         fig = Figure(figsize=(5, 4), dpi=100)
         plot = fig.add_subplot(1, 1, 1)

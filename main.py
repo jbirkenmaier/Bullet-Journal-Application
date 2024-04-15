@@ -14,7 +14,6 @@ column = 0
 def main():
     k = 0
     root = ctk.CTk()
-    #app = BulletJournalApp(root)
     root.title("Journal-Application")
     root.geometry("1000x500")
     
@@ -29,20 +28,12 @@ def main():
     root.grid_rowconfigure(0, weight=1)
     root.grid_columnconfigure(0, weight=1)
     root.grid_columnconfigure(1, weight=1)
-
-    #acts=fl.activities
-    #fl.set_row_col()
-
-    #fl.load_state(left_frame,right_frame)
-
     
     try:
         fl.load_state(left_frame,right_frame)
     except:
         print("No saved data yet")
-    
-    #print("ROW", row, "COLUMN", column)
-    
+        
     inputtxt = tk.Text(left_frame, height = 1, width = 20, font=font,bg="lightgray", padx=10, pady=5)
     inputtxt.grid(row=1, column=2)
     inputtxt.bind("<Return>",lambda event: fl.on_enter(left_frame,right_frame,event, inputtxt))
@@ -59,14 +50,8 @@ def main():
         tk.Frame(left_frame,width=183, height=20, bg="black").grid(row=row, column=1, sticky="nsew")
 
     k+=1
-    #add_activity_button.after_idle(lambda: fl.get_button_width(add_activity_button, inputtxt))  # Get button width after it's fully drawn
 
-    '''
-    activity = fl.Activity(right_frame,"name", 0,0).plot_graph()
-    activity = fl.Activity(right_frame,"name", 0,1).plot_graph()
-    activity = fl.Activity(right_frame,"name", 1,0).plot_graph()
-    activity = fl.Activity(right_frame,"name", 1,1).plot_graph()
-    '''
     root.mainloop()
+    
 if __name__ == "__main__":
     main()
