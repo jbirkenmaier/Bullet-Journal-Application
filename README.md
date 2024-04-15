@@ -16,8 +16,13 @@ Current progress: <br>
 03.04.2024: <br>
 -attempt to integrate the possibility to save and load data. I discovered that there are some issues about the structure of my code, especially with handeling the data. These will be resolved soon.
 
+15.04.2024: <br>
+-Saving and loading data is now possible. The entered data is stored automatically. The next feature I want to integrate will be the option to delete data.
+-Temporarily removed the "Add activity" button as it seemed to cause some issues. 
+
 Further goals: <br>
---> storing the given data, so that the application can be used as a journal  <br>
+--> ~~storing the given data, so that the application can be used as a journal~~ <br>
+--> Ability to delete past entrys <br>
 --> Create nicer plots <br>
 --> Ability to personalize the appearance by the user <br> 
 --> Ability to set goals <br>
