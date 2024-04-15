@@ -8,6 +8,7 @@ import time
 import datetime
 import ast
 import csv
+import main
 
 current_time = datetime.datetime.now()
 formatted_time = current_time.strftime("%d.%m.%Y %H:%M:%S")
@@ -16,7 +17,7 @@ print("Formatted Time:", formatted_time)
 
 def on_enter(left_frame,right_frame,event, inputtxt, get_txt=True, activity=None):
     #printInput(root,inputtxt)
-    global row, column, first_run
+    #global row, column, first_run
     if get_txt==True:
         inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     else:
@@ -26,25 +27,25 @@ def on_enter(left_frame,right_frame,event, inputtxt, get_txt=True, activity=None
 #Solution: Start from the smallest rows and columns
 
     if inp != "" and get_txt==True:
-        if column==2:
+        if main.column==2:
             print(main.row,main.column)
-            activity = Activity(right_frame,inp, row, column)
+            activity = Activity(right_frame,inp, main.row, main.column)
             activity.time = datetime.datetime.now()
             print(activity.time)
-            activities.append(activity)
+            main.activities.append(activity)
             #activity.plot_graph()
-            mcolumn=0
-            row+=1
+            main.column=0
+            main.row+=1
         else:
-            print(row,column)
-            activity = Activity(right_frame,inp, row,column)
+            print(main.row,main.column)
+            activity = Activity(right_frame,inp, main.row,main.column)
             activity.time = datetime.datetime.now()
-            activities.append(activity)
+            main.activities.append(activity)
             #activity.plot_graph()
-            column+=1
+            main.column+=1
         ctk.set_default_color_theme("blue")
         activity_button = ctk.CTkButton(master=left_frame, text=inp)
-        rows=len(activities)+10
+        rows=len(main.activities)+10
         activity_button.grid(row=rows, column=1,sticky="nsew", pady=1)
         activity_button.bind("<Button-1>",lambda event: activity_button_event(left_frame,right_frame, event, inputtxt, rows))
         save_state()
@@ -67,6 +68,7 @@ def on_enter(left_frame,right_frame,event, inputtxt, get_txt=True, activity=None
         pass
 
 def load_state(root1,root2):#call root as right_frame
+    print("loading state")
     with open('data.csv') as file:
         csv_reader = csv.reader(file)
         for line in csv_reader:
@@ -124,8 +126,8 @@ def set_row_col():
     
 def save_state():
     with open('data.csv', 'w') as file:
-        print("Datenlänge:",len(activities))
-        for element in activities:
+        print("Datenlänge:",len(main.activities))
+        for element in main.activities:
             file.write(str(element.name)+",")
             file.write(str(element.row)+",")
             file.write(str(element.column)+",")
@@ -146,10 +148,10 @@ def printInput(root,inputtxt):
 def read_data(left_frame,right_frame,event, user_data, row):
     list_position_of_activity = row-10
     inp = user_data.get("end-1c linestart", "end-1c lineend")
-    activities[list_position_of_activity-1].y.append(float(inp))
-    activities[list_position_of_activity-1].time=datetime.datetime.now()
-    activities[list_position_of_activity-1].append_time()
-    activities[list_position_of_activity-1].plot_graph()
+    main.activities[list_position_of_activity-1].y.append(float(inp))
+    main.activities[list_position_of_activity-1].time=datetime.datetime.now()
+    main.activities[list_position_of_activity-1].append_time()
+    main.activities[list_position_of_activity-1].plot_graph()
     save_state()
     #print(list_position_of_activity)
     #print(activities[list_position_of_activity-1].name)
@@ -159,7 +161,9 @@ def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
     user_data.grid(row=row, column =2)
     user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row))
-    
+
+
+'''    
 
 def on_enter(left_frame,right_frame,event, inputtxt, get_txt=True, activity=None):
     #printInput(root,inputtxt)
@@ -212,6 +216,8 @@ def on_enter(left_frame,right_frame,event, inputtxt, get_txt=True, activity=None
         #activity_label.grid(row=len(activities)+10, column=1,sticky="nsew", pady=1)
     else:
         pass
+
+'''
 
 def load_state(root1,root2):#call root as right_frame
     with open('data.csv') as file:
