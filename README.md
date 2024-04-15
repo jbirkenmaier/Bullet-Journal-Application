@@ -1,7 +1,7 @@
 In this project I am building an application to track my daily activities and chores. <br>
 Current progress: <br>
 
-<img src="https://github.com/jbirkenmaier/Bullet-Journal-Application/assets/127735731/89620e0b-9188-42f7-b2a9-dfcfe6ad19a0" width="800" height=auto />
+<img src="https://github.com/jbirkenmaier/Bullet-Journal-Application/assets/127735731/7d51cb7f-cfe4-402a-80aa-c40b50686454" width="800" height=auto />
 
 01.04.2024:<br>
 -Created an input window, to add activities <br>
