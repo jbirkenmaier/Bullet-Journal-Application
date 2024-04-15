@@ -17,7 +17,7 @@ Current progress: <br>
 -attempt to integrate the possibility to save and load data. I discovered that there are some issues about the structure of my code, especially with handeling the data. These will be resolved soon.
 
 15.04.2024: <br>
--Saving and loading data is now possible. The entered data is stored automatically. The next feature I want to integrate will be the option to delete data.
+-Saving and loading data is now possible. The entered data is stored automatically. The next feature I want to integrate will be the option to delete data. <br>
 -Temporarily removed the "Add activity" button as it seemed to cause some issues. 
 
 Further goals: <br>
