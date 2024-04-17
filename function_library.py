@@ -126,22 +126,56 @@ def printInput(root,inputtxt):
     label = tk.Label(root, text = inp)
     #label.pack()
 
-def read_data(left_frame,right_frame,event, user_data, row):
+def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = False, u_data_date = None):
     list_position_of_activity = row-11
     #print("MARKER, ",list_position_of_activity, len(main.activities))
+
     inp = user_data.get("end-1c linestart", "end-1c lineend")
+    clear_line(user_data)
+    
+    if (date_data_exists == True) and (inp == ""):
+        print("Data Missing! Just given a date")
+        return
+    
+    if date_data_exists == False and inp!= "":
+        main.activities[list_position_of_activity].y.append(float(inp))
+        main.activities[list_position_of_activity].time=datetime.datetime.now()
+        main.activities[list_position_of_activity].append_time()
+        main.activities[list_position_of_activity].plot_graph()    
+        save_state()
+    elif (date_data_exists == True) and (inp != ""):
+        inp_u_data_date =  u_data_date.get("end-1c linestart", "end-1c lineend")
+        clear_line(u_data_date)
+        u_year = int(inp_u_data_date[-4:])
+        main.activities[list_position_of_activity].y.append(float(inp))
+        main.activities[list_position_of_activity].time=datetime.datetime.now()
+        main.activities[list_position_of_activity].append_time()
+        main.activities[list_position_of_activity].x[-1] = main.activities[list_position_of_activity].x[-1].replace(year=u_year)
+        reorder(main.activities[list_position_of_activity])
+        main.activities[list_position_of_activity].plot_graph()    
+        save_state()
 
-    main.activities[list_position_of_activity].y.append(float(inp))
-    main.activities[list_position_of_activity].time=datetime.datetime.now()
-    main.activities[list_position_of_activity].append_time()
-    main.activities[list_position_of_activity].plot_graph()    
-    save_state()
 
+def reorder(activity):
+    original_state_x = activity.x
+    original_state_y = activity.y
+    sorted_indices = sorted(range(len(original_state_x)), key=lambda x: original_state_x[x])
+    activity.x = [original_state_x[i] for i in sorted_indices]
+    activity.y = [original_state_y[i] for i in sorted_indices]
+
+def clear_line(text_widget):
+    text_widget.delete("insert linestart", "insert lineend")
+    
 def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
     user_data.grid(row=row, column =2)
     user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row))
+    
+    user_data_date = tk.Text(left_frame, height = 1, width = 10, bg="lightgray", padx=10, pady=5)
+    user_data_date.grid(row=row, column =3)
+    user_data_date.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
 
+    
 
 '''    
 
