@@ -131,10 +131,21 @@ def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = F
     #print("MARKER, ",list_position_of_activity, len(main.activities))
 
     inp = user_data.get("end-1c linestart", "end-1c lineend")
+    inp_u_data_date =  u_data_date.get("end-1c linestart", "end-1c lineend")
+
     clear_line(user_data)
-    
+    clear_line(u_data_date)
+
+    current_date = str(datetime.datetime.now().date().strftime("%d.%m.%Y"))
+
+    u_data_date.insert("end",current_date)
+
+
     if (date_data_exists == True) and (inp == ""):
         print("Data Missing! Just given a date")
+        return
+    elif(date_data_exists == True) and (inp_u_data_date == ""):
+        print("Date Missing! Just given data")
         return
     
     if date_data_exists == False and inp!= "":
@@ -144,13 +155,11 @@ def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = F
         main.activities[list_position_of_activity].plot_graph()    
         save_state()
     elif (date_data_exists == True) and (inp != ""):
-        inp_u_data_date =  u_data_date.get("end-1c linestart", "end-1c lineend")
-        clear_line(u_data_date)
         u_year = int(inp_u_data_date[-4:])
         main.activities[list_position_of_activity].y.append(float(inp))
         main.activities[list_position_of_activity].time=datetime.datetime.now()
         main.activities[list_position_of_activity].append_time()
-        main.activities[list_position_of_activity].x[-1] = main.activities[list_position_of_activity].x[-1].replace(year=u_year)
+        main.activities[list_position_of_activity].x[-1] = main.activities[list_position_of_activity].x[-1].replace(year=u_year)##################
         reorder(main.activities[list_position_of_activity])
         main.activities[list_position_of_activity].plot_graph()    
         save_state()
@@ -169,11 +178,14 @@ def clear_line(text_widget):
 def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
     user_data.grid(row=row, column =2)
-    user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row))
-    
+
+    current_date = str(datetime.datetime.now().date().strftime("%d.%m.%Y"))
     user_data_date = tk.Text(left_frame, height = 1, width = 10, bg="lightgray", padx=10, pady=5)
     user_data_date.grid(row=row, column =3)
+    user_data_date.insert("end",current_date)
+
     user_data_date.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
+    user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
 
     
 
