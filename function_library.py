@@ -126,20 +126,10 @@ def printInput(root,inputtxt):
     label = tk.Label(root, text = inp)
     #label.pack()
 
-def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = False, u_data_date = None):
-    list_position_of_activity = row-11
-    #print("MARKER, ",list_position_of_activity, len(main.activities))
+def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = False, u_data_date = None, time_data_exists=False, u_data_time=None):
 
     inp = user_data.get("end-1c linestart", "end-1c lineend")
     inp_u_data_date =  u_data_date.get("end-1c linestart", "end-1c lineend")
-
-    clear_line(user_data)
-    clear_line(u_data_date)
-
-    current_date = str(datetime.datetime.now().date().strftime("%d.%m.%Y"))
-
-    u_data_date.insert("end",current_date)
-
 
     if (date_data_exists == True) and (inp == ""):
         print("Data Missing! Just given a date")
@@ -147,19 +137,46 @@ def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = F
     elif(date_data_exists == True) and (inp_u_data_date == ""):
         print("Date Missing! Just given data")
         return
+
+
+    list_position_of_activity = row-11
+
+    if u_data_time != None:
+        print('worked')
+        inp_u_data_time = u_data_time.get("end-1c linestart", "end-1c lineend")
+
+
+
+    clear_line(user_data)
+    clear_line(u_data_date)
+    clear_line(u_data_time)
+
+    current_time= str(datetime.datetime.now().time().strftime("%H:%M"))
+    u_data_time.insert("end",current_time)
+    u_data_time.mark_set(tk.INSERT, "1.0")
+
+    current_date = str(datetime.datetime.now().date().strftime("%d.%m.%Y"))
+    u_data_date.insert("end",current_date)
+
+
+
     
-    if date_data_exists == False and inp!= "":
+    if date_data_exists == False and inp!= "": #if no date_data_exists and input is given, the current date is assumed
         main.activities[list_position_of_activity].y.append(float(inp))
         main.activities[list_position_of_activity].time=datetime.datetime.now()
         main.activities[list_position_of_activity].append_time()
         main.activities[list_position_of_activity].plot_graph()    
         save_state()
-    elif (date_data_exists == True) and (inp != ""):
-        u_year = int(inp_u_data_date[-4:])
+    elif (date_data_exists == True) and (inp != "") and (time_data_exists==True): #if date_data_exists and time_data_exists and input is given, it will be handled accordingly
+        #u_year = int(inp_u_data_date[-4:])
+
+        u_day, u_month, u_year = map(int, inp_u_data_date.split('.'))
+        u_hour , u_minute = map(int, inp_u_data_time.split(':'))
+
         main.activities[list_position_of_activity].y.append(float(inp))
         main.activities[list_position_of_activity].time=datetime.datetime.now()
         main.activities[list_position_of_activity].append_time()
-        main.activities[list_position_of_activity].x[-1] = main.activities[list_position_of_activity].x[-1].replace(year=u_year)##################
+        main.activities[list_position_of_activity].x[-1] = main.activities[list_position_of_activity].x[-1].replace(day = u_day, month=u_month, year=u_year, hour=u_hour, minute=u_minute)##################
         reorder(main.activities[list_position_of_activity])
         main.activities[list_position_of_activity].plot_graph()    
         save_state()
@@ -180,12 +197,19 @@ def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data.grid(row=row, column =2)
 
     current_date = str(datetime.datetime.now().date().strftime("%d.%m.%Y"))
-    user_data_date = tk.Text(left_frame, height = 1, width = 10, bg="lightgray", padx=10, pady=5)
+    user_data_date = tk.Text(left_frame, height = 1, width = 10, bg="lightgray", padx=3, pady=5)
     user_data_date.grid(row=row, column =3)
     user_data_date.insert("end",current_date)
 
+    current_time= str(datetime.datetime.now().time().strftime("%H:%M"))
+    user_data_time = tk.Text(left_frame, height = 1, width = 10, bg="lightgray", padx=3, pady=5)
+    user_data_time.grid(row=row, column =4)
+    user_data_time.insert("end",current_time)
+
+    #there is a problem here...
     user_data_date.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
     user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
+    user_data_time.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date, u_data_time=user_data_time, time_data_exists = True))
 
     
 

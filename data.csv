@@ -1,4 +1,4 @@
-a,0,0,None, ,[datetime.datetime(2024, 4, 17, 19, 25, 52, 186226), datetime.datetime(2024, 4, 17, 19, 26, 19, 957384), datetime.datetime(2024, 4, 17, 19, 31, 33, 724383), datetime.datetime(2043, 4, 17, 19, 47, 17, 276231), datetime.datetime(2060, 4, 17, 19, 46, 44, 700882), datetime.datetime(2093, 4, 17, 19, 46, 16, 386030)],[4.0, 1.0, 4.0, 1.0, 2.0, 4.0]
-b,0,1,None, ,[],[]
-c,0,2,None, ,[],[]
-d,1,0,None, ,[datetime.datetime(1900, 4, 17, 19, 40, 49, 308186), datetime.datetime(1990, 4, 17, 19, 41, 21, 626391), datetime.datetime(2022, 4, 17, 19, 40, 38, 462760), datetime.datetime(2024, 4, 17, 19, 36, 11, 100657)],[1.0, 3.0, 4.0, 2.0]
+a,0,0,None, ,[datetime.datetime(2024, 4, 18, 10, 30, 38, 498960), datetime.datetime(2024, 4, 18, 10, 46, 23, 427301), datetime.datetime(2024, 4, 18, 10, 50, 39, 725470)],[3.0, 4.0, 234.0]
+b,0,1,None, ,[datetime.datetime(2024, 4, 18, 10, 50, 5, 940780), datetime.datetime(2024, 4, 18, 11, 0, 18, 682873), datetime.datetime(2024, 4, 18, 11, 5, 31, 373975), datetime.datetime(2024, 4, 18, 11, 5, 50, 735686)],[44.0, 88.0, 77.0, 77.0]
+c,0,2,None, ,[datetime.datetime(2024, 4, 18, 11, 20, 14, 807393), datetime.datetime(2024, 4, 18, 11, 20, 34, 598648)],[5.0, 7.0]
+d,1,0,None, ,[],[]
