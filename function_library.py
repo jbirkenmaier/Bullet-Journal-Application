@@ -207,9 +207,46 @@ def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data_time.insert("end",current_time)
 
     #there is a problem here...
-    user_data_date.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
-    user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
-    user_data_time.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date, u_data_time=user_data_time, time_data_exists = True))
+    inp_truth = user_data.bind("<Return>",lambda event: check_for_input(left_frame,right_frame,event,[user_data, user_data_date, user_data_time]))
+    inp_truth = user_data_date.bind("<Return>",lambda event: check_for_input(left_frame,right_frame,event, [user_data, user_data_date, user_data_time]))
+    inp_truth = user_data_time.bind("<Return>",lambda event: check_for_input(left_frame,right_frame,event, [user_data, user_data_date, user_data_time]))
+    
+    user_data_exists = inp_truth[0]
+    date_data_exists = inp_truth[1]
+    time_data_exists = inp_truth[2]
+
+    print('user_data_exists = ',user_data_exists)
+    print('input_truth = ', inp_truth) #very curious output
+
+    #there is a problem here...
+    #user_data_date.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
+    #user_data.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date))
+    #user_data_time.bind("<Return>",lambda event: read_data(left_frame,right_frame,event, user_data, row, date_data_exists=True, u_data_date=user_data_date, u_data_time=user_data_time, time_data_exists = True))
+
+    if user_data_exists == 1 and date_data_exists==1 and time_data_exists == 1:
+        print('call')
+        read_data(left_frame,right_frame,event, user_data, row, date_data_exists=date_data_exists, u_data_date=user_data_date, u_data_time=user_data_time, time_data_exists = time_data_exists)
+                  
+    
+
+def check_for_input(left_frame,right_frame,event, inp_list): #takes inputs as list
+
+    inp_truth=[]
+    
+    #user_data_exists, date_data_exists, time_data_exists
+
+    
+    for element in inp_list:
+        inp = element.get("end-1c linestart", "end-1c lineend")
+        if inp != "":
+            inp_value = True
+        else:
+            inp_value = False
+        inp_truth.append(inp_value)
+
+    print(inp_truth)
+
+    return inp_truth
 
     
 
