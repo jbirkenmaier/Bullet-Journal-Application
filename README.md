@@ -23,9 +23,15 @@ Current progress: <br>
 17.04.2024: <br>
 -Worked on the possibility to set the times of the activities dynamically. Adjusting the year of the activtiy is now possible, adding this feature for date and time now is trivial <br>
 
+09.05.2024: <br>
+-The application is now fully functional in principle. <br>
+-Data can be entered, date and time of the data given can be adjusted and plotted accordingly. <br>
+-The data entered will be stored in a .txt file and will load when reopening the application. <br>
+-Data currently cant be deleted from inside the application. <br>
+
 Further goals: <br>
 --> ~~storing the given data, so that the application can be used as a journal~~ <br>
---> Ability to set time and date of an activity, so that past activities can be entered <br>
+--> ~~Ability to set time and date of an activity, so that past activities can be entered~~<br>
 --> Ability to manipulate past entrys <br>
 --> Create nicer plots <br>
 --> Ability to personalize the appearance by the user <br> 
