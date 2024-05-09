@@ -40,11 +40,11 @@ def main():
 
 
     #hier ist ein mess up
-    '''
+    
     add_activity_button = ctk.CTkButton(master=left_frame, text="Add Activity")
     add_activity_button.grid(row=2, column=2)
     add_activity_button.bind("<Button-1>",lambda event: fl.add_activity_button_command(left_frame,right_frame, event, inputtxt))
-    '''
+
     
     for row in range(3,10):
         tk.Frame(left_frame,width=183, height=20, bg="black").grid(row=row, column=1, sticky="nsew")

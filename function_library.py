@@ -127,9 +127,24 @@ def printInput(root,inputtxt):
     #label.pack()
 
 def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = False, u_data_date = None, time_data_exists=False, u_data_time=None):
+    try:
+        inp = user_data.get("end-1c linestart", "end-1c lineend")
+    except:
+        if type(user_data)==str:
+            inp=user_data
+            print('type gets passed as string, not as Text-object, this can be cause for errors')
+        else:
+            print('something went wrong')
 
-    inp = user_data.get("end-1c linestart", "end-1c lineend")
-    inp_u_data_date =  u_data_date.get("end-1c linestart", "end-1c lineend")
+    try:
+        inp_u_data_date =  u_data_date.get("end-1c linestart", "end-1c lineend")
+    except:
+        if type(u_data_date)==str:
+            inp_u_data_date = u_data_date
+            print('type gets passed as string, not as Text-object, this can be cause for errors')
+
+        else:
+            print('something went wront')
 
     if (date_data_exists == True) and (inp == ""):
         print("Data Missing! Just given a date")
@@ -143,10 +158,14 @@ def read_data(left_frame,right_frame,event, user_data, row, date_data_exists = F
 
     if u_data_time != None:
         print('worked')
-        inp_u_data_time = u_data_time.get("end-1c linestart", "end-1c lineend")
-
-
-
+        try:
+            inp_u_data_time = u_data_time.get("end-1c linestart", "end-1c lineend")
+        except:
+            if type(u_data_time) == str:
+                inp_u_data_time = u_data_time
+                print('type gets passed as string, not as Text-object, this can be cause for errors')
+            else:
+                print('something went wrong')
     clear_line(user_data)
     clear_line(u_data_date)
     clear_line(u_data_time)
@@ -190,7 +209,10 @@ def reorder(activity):
     activity.y = [original_state_y[i] for i in sorted_indices]
 
 def clear_line(text_widget):
-    text_widget.delete("insert linestart", "insert lineend")
+    try:
+        text_widget.delete("insert linestart", "insert lineend")
+    except:
+        pass
     
 def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data = tk.Text(left_frame, height = 1, width = 5, bg="lightgray", padx=10, pady=5)
@@ -207,14 +229,20 @@ def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     user_data_time.insert("end",current_time)
 
     #there is a problem here...
-    inp_truth = user_data.bind("<Return>",lambda event: check_for_input(left_frame,right_frame,event,[user_data, user_data_date, user_data_time]))
-    inp_truth = user_data_date.bind("<Return>",lambda event: check_for_input(left_frame,right_frame,event, [user_data, user_data_date, user_data_time]))
-    inp_truth = user_data_time.bind("<Return>",lambda event: check_for_input(left_frame,right_frame,event, [user_data, user_data_date, user_data_time]))
+    inp_truth = user_data.bind("<Return>",lambda event: process_user_input(left_frame,right_frame,event,[user_data, user_data_date, user_data_time],row))
+    inp_truth = user_data_date.bind("<Return>",lambda event: process_user_input(left_frame,right_frame,event, [user_data, user_data_date, user_data_time],row))
+    inp_truth = user_data_time.bind("<Return>",lambda event: process_user_input(left_frame,right_frame,event, [user_data, user_data_date, user_data_time],row))
     
+
+def process_user_input(left_frame, right_frame, event, inp_list, row):
+    (inp_truth,inp_data) = check_for_input(left_frame, right_frame, event, inp_list)
     user_data_exists = inp_truth[0]
     date_data_exists = inp_truth[1]
     time_data_exists = inp_truth[2]
 
+    user_data = inp_list[0]
+    user_data_date = inp_list[1]
+    user_data_time = inp_list[2]
     print('user_data_exists = ',user_data_exists)
     print('input_truth = ', inp_truth) #very curious output
 
@@ -226,12 +254,12 @@ def activity_button_event(left_frame,right_frame, event, inputtxt, row):
     if user_data_exists == 1 and date_data_exists==1 and time_data_exists == 1:
         print('call')
         read_data(left_frame,right_frame,event, user_data, row, date_data_exists=date_data_exists, u_data_date=user_data_date, u_data_time=user_data_time, time_data_exists = time_data_exists)
-                  
-    
+   
 
 def check_for_input(left_frame,right_frame,event, inp_list): #takes inputs as list
 
     inp_truth=[]
+    inp_data =[]
     
     #user_data_exists, date_data_exists, time_data_exists
 
@@ -240,13 +268,16 @@ def check_for_input(left_frame,right_frame,event, inp_list): #takes inputs as li
         inp = element.get("end-1c linestart", "end-1c lineend")
         if inp != "":
             inp_value = True
+            inp_data.append(inp)
         else:
             inp_value = False
+            inp_data.append('')
         inp_truth.append(inp_value)
 
     print(inp_truth)
+    print(inp_data)
 
-    return inp_truth
+    return inp_truth, inp_data
 
     
 
@@ -360,6 +391,10 @@ def get_button_width(button, inputtxt):
     inputtxt.place(x=50+add_activity_button_width+90, y=50)
 
 def add_activity_button_command(left_frame,right_frame,event,inputtxt):
+    printInput(left_frame, inputtxt)
+    on_enter(left_frame,right_frame,event,inputtxt)
+    clear_line(inputtxt)
+    '''
     inp = inputtxt.get("end-1c linestart", "end-1c lineend")
     if inp != "":
         if main.column==2:
@@ -383,6 +418,7 @@ def add_activity_button_command(left_frame,right_frame,event,inputtxt):
         activity.plot_graph()
         save_state()
     inputtxt.delete(1.0, ctk.END)
+    '''
 
 class Activity:
     def __init__(self, root, name, row, column):
@@ -399,7 +435,8 @@ class Activity:
         #self.goal (daily, weekly,monthly)
         
     def plot_graph(self):
-        
+
+        print(self.row, self.column)
         x=self.x
         y=self.y
         
