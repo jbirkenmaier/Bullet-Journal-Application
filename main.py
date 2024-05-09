@@ -37,9 +37,6 @@ def main():
     inputtxt = tk.Text(left_frame, height = 1, width = 20, font=font,bg="lightgray", padx=10, pady=5)
     inputtxt.grid(row=1, column=2)
     inputtxt.bind("<Return>",lambda event: fl.on_enter(left_frame,right_frame,event, inputtxt))
-
-
-    #hier ist ein mess up
     
     add_activity_button = ctk.CTkButton(master=left_frame, text="Add Activity")
     add_activity_button.grid(row=2, column=2)
