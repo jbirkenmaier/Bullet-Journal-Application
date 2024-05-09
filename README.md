@@ -32,7 +32,7 @@ Current progress: <br>
 Further goals: <br>
 --> ~~storing the given data, so that the application can be used as a journal~~ <br>
 --> ~~Ability to set time and date of an activity, so that past activities can be entered~~<br>
---> Ability to manipulate past entrys <br>
+--> Ability to manipulate past entrys and delete them <br>
 --> Create nicer plots <br>
 --> Ability to personalize the appearance by the user <br> 
 --> Ability to set goals <br>
