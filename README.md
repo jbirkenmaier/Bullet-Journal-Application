@@ -34,6 +34,9 @@ Further goals: <br>
 --> ~~Ability to set time and date of an activity, so that past activities can be entered~~<br>
 --> Ability to manipulate past entrys and delete them <br>
 --> Create nicer plots <br>
+--> Ability to choose different kinds of plots <br>
+--> Ability to see statistics about your entries <br>
+--> Introduce a rewarding system <br>
 --> Ability to personalize the appearance by the user <br> 
 --> Ability to set goals <br>
 --> Ability to take journaling notes <br>
